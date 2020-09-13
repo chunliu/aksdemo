@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: aspnetcore-aad-svc
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: aspnetcore-aad
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: aspnetcore-aad

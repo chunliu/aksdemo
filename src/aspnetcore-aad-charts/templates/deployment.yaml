@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aspnetcore-aad
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: aspnetcore-aad
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: aspnetcore-aad
+  template:
+    metadata:
+      labels:
+        app: aspnetcore-aad
+    spec:
+      containers:
+        - name: aspnetcore-aad
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Production
+          - name: AzureAD__Domain
+            value: {{ .Values.env.aadDomain }}
+          - name: AzureAD__TenantId
+            value: {{ .Values.env.aadTenantId }}
+          - name: AzureAD__ClientId
+            value: {{ .Values.env.aadClientId }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
