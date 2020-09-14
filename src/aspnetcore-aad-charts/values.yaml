@@ -16,7 +16,7 @@ service:
 ingress:
   annotations:
     kubernetes.io/ingress.class: nginx
-    cert-manager.io/issuer: letsencrypt-issuer
+    # cert-manager.io/issuer: letsencrypt-issuer
   hosts:
     - host: # yoursite.yourdomain.com
       paths:
