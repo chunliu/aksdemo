@@ -7,21 +7,25 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using aspnetcore_aad.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace aspnetcore_aad.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
+        private readonly IConfiguration _configuration;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IConfiguration configuration, ILogger<HomeController> logger)
         {
+            _configuration = configuration;
             _logger = logger;
         }
 
         public IActionResult Index()
         {
+            ViewData["AKSClusterInfo"] = _configuration["AKSClusterInfo"];
             return View();
         }
 
