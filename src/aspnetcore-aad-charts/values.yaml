@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: chunliu/aspnetcore-aad
+  repository: ghcr.io/chunliu/aspnetcore-aad
   pullPolicy: IfNotPresent
   tag: "v0.2.0"
 
