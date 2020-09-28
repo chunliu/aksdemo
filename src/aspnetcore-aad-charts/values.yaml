@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: chunliu/aspnetcore-aad
   pullPolicy: IfNotPresent
-  tag: "v0.1.1"
+  tag: "v0.2.0"
 
 service:
   type: ClusterIP
@@ -38,3 +38,4 @@ env:
   aadDomain: # qualified.domain.name
   aadClientId: # Client Id
   aadTenantId: # Tenant Id
+  aksCluster: akscluster1 # The name of the aks cluster

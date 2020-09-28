@@ -28,6 +28,8 @@ spec:
             value: {{ .Values.env.aadTenantId }}
           - name: AzureAD__ClientId
             value: {{ .Values.env.aadClientId }}
+          - name: AKSClusterInfo
+            value: {{ .Values.env.aksCluster }}
           ports:
             - name: http
               containerPort: 80
