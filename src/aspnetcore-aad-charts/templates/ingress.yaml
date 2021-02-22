@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: aspnetcore-aad-ingress
@@ -10,6 +10,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
+  ingressClassName: nginx
   {{- if .Values.ingress.tls }}
   tls:
     {{- range .Values.ingress.tls }}
@@ -27,8 +28,11 @@ spec:
         paths:
           {{- range .paths }}
           - path: {{ . }}
+            pathType: ImplementationSpecific
             backend:
-              serviceName: aspnetcore-aad-svc
-              servicePort: 80
+              service:
+                name: aspnetcore-aad-svc
+                port: 
+                  number: 80
           {{- end }}
     {{- end }}

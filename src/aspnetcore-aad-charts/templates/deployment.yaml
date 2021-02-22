@@ -14,6 +14,7 @@ spec:
     metadata:
       labels:
         app: aspnetcore-aad
+        aadpodidbinding: {{ .Values.aadPodIdBinding }} # Pod identity
     spec:
       containers:
         - name: aspnetcore-aad
@@ -30,6 +31,12 @@ spec:
             value: {{ .Values.env.aadClientId }}
           - name: AKSClusterInfo
             value: {{ .Values.env.aksCluster }}
+          - name: KeyVaultUri
+            value: {{ .Values.env.keyVaultUri }}
+          - name: UserAssignedIdentityClientId
+            value: {{ .Values.env.userAssignedIdentityClientId }}
+          - name: SecretName
+            value: {{ .Values.env.secretName }}
           ports:
             - name: http
               containerPort: 80

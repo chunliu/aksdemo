@@ -4,10 +4,12 @@
 
 replicaCount: 1
 
+aadPodIdBinding: # aad pod identity binding
+
 image:
   repository: ghcr.io/chunliu/aspnetcore-aad
   pullPolicy: IfNotPresent
-  tag: "v0.2.0"
+  tag: "v0.3.0"
 
 service:
   type: ClusterIP
@@ -16,13 +18,13 @@ service:
 ingress:
   annotations:
     kubernetes.io/ingress.class: nginx
-    # cert-manager.io/issuer: letsencrypt-issuer
+    # cert-manager.io/cluster-issuer: letsencrypt-issuer
   hosts:
     - host: # yoursite.yourdomain.com
       paths:
         - /
   tls: 
-    - secretName: # chart-example-tls
+    - secretName: frontend-tls
       hosts:
         # - yoursite.yourdomain.com
 
@@ -39,3 +41,6 @@ env:
   aadClientId: # Client Id
   aadTenantId: # Tenant Id
   aksCluster: akscluster1 # The name of the aks cluster
+  keyVaultUri: # Azure key vault Uri
+  userAssignedIdentityClientId: # User assigned identity, has permission to the key vault
+  secretName: # The secret name
