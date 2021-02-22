@@ -5,4 +5,8 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>This page is served from the cluster: <b>@ViewData["AKSClusterInfo"]</b></p>
+    <p></p>
+    <a asp-action="GetSecretFromKV">Get Secret from Key Vault</a>
+    <p></p>
+    <p>@ViewData["KVSecret"]</p>
 </div>
