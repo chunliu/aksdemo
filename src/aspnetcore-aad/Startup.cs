@@ -1,14 +1,20 @@
+using aspnetcore_aad.Models;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
+using System;
+using System.Threading.Tasks;
 
 namespace aspnetcore_aad
 {
@@ -21,9 +27,27 @@ namespace aspnetcore_aad
 
         public IConfiguration Configuration { get; }
 
+        private async Task<string> GetConnectionStringFromKV()
+        {
+            // Get the credential of user assigned identity
+            var credential = new ChainedTokenCredential(
+                new ManagedIdentityCredential(Configuration["UserAssignedIdentityClientId"]),
+                new AzureCliCredential());
+            // Get secret from key vault
+            var kvClient = new SecretClient(new Uri(Configuration["KeyVaultUri"]), credential);
+            var secretBundle = await kvClient.GetSecretAsync("ConnectionString");
+
+            return secretBundle.Value.Value;
+        }
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionString = GetConnectionStringFromKV().GetAwaiter().GetResult();
+
+            services.AddDbContext<TodoContext>(
+                options => options.UseSqlServer(connectionString)
+            );
+
             services.AddMicrosoftIdentityWebAppAuthentication(Configuration);
 
             services.AddControllersWithViews(options =>
