@@ -16,8 +16,9 @@ service:
   port: 80
 
 ingress:
+  class: nginx
   annotations:
-    kubernetes.io/ingress.class: nginx
+    # kubernetes.io/ingress.class: nginx
     # cert-manager.io/cluster-issuer: letsencrypt-issuer
   hosts:
     - host: # yoursite.yourdomain.com

@@ -22,7 +22,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: ASPNETCORE_ENVIRONMENT
-            value: Production
+            value: {{ .Values.env.ASPNETCORE_ENVIRONMENT }}
           - name: AzureAD__Domain
             value: {{ .Values.env.aadDomain }}
           - name: AzureAD__TenantId
