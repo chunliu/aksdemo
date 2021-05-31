@@ -5,8 +5,13 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     app: aspnetcore-aad
-  {{- with .Values.ingress.annotations }}
   annotations:
+  {{- if .Values.ingress.canary }}
+    nginx.ingress.kubernetes.io/canary: "true"
+    nginx.ingress.kubernetes.io/canary-by-header: "canary"
+    nginx.ingress.kubernetes.io/canary-weight: "{{ .Values.ingress.weight }}"
+  {{- end }}
+  {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:

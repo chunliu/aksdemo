@@ -9,15 +9,17 @@ aadPodIdBinding: # aad pod identity binding
 image:
   repository: ghcr.io/chunliu/aspnetcore-aad
   pullPolicy: IfNotPresent
-  tag: "v0.3.0"
+  tag: "v0.4.3"
 
 service:
   type: ClusterIP
   port: 80
 
 ingress:
+  canary: false
+  weight: 0
   class: nginx
-  annotations:
+  annotations: {}
     # kubernetes.io/ingress.class: nginx
     # cert-manager.io/cluster-issuer: letsencrypt-issuer
   hosts:
