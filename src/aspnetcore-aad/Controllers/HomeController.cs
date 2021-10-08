@@ -35,7 +35,7 @@ namespace aspnetcore_aad.Controllers
             return View(indexViewModel);
         }
 
-        static async Task<IndexViewModel> GetIndexViewModel()
+        async Task<IndexViewModel> GetIndexViewModel()
         {
             var indexViewModel = new IndexViewModel();
             GCMemoryInfo gcInfo = GC.GetGCMemoryInfo();
@@ -43,24 +43,31 @@ namespace aspnetcore_aad.Controllers
             indexViewModel.HostName = Dns.GetHostName();
             indexViewModel.IpList = await Dns.GetHostAddressesAsync(indexViewModel.HostName);
 
-            indexViewModel.cGroup = RuntimeInformation.OSDescription.StartsWith("Linux") && Directory.Exists("/sys/fs/cgroup/memory");
+            indexViewModel.cGroup = RuntimeInformation.OSDescription.StartsWith("Linux") 
+                && Directory.Exists("/sys/fs/cgroup/memory")
+                && Directory.Exists("/sys/fs/cgroup/cpu");
+
+            _logger.LogInformation($"running in cgroup? : {indexViewModel.cGroup}");
+
             if (indexViewModel.cGroup)
             {
                 string usage = System.IO.File.ReadAllLines("/sys/fs/cgroup/memory/memory.usage_in_bytes")[0];
                 string limit = System.IO.File.ReadAllLines("/sys/fs/cgroup/memory/memory.limit_in_bytes")[0];
-                string cpuUsage = System.IO.File.ReadAllLines("/sys/fs/cgroup/cpu/cpuacct.usage")[0];
+                string cpuQuota = System.IO.File.ReadAllLines("/sys/fs/cgroup/cpu/cpu.cfs_quota_us")[0];
+                string cpuPeriod = System.IO.File.ReadAllLines("/sys/fs/cgroup/cpu/cpu.cfs_period_us")[0];
+                indexViewModel.CpuShares = System.IO.File.ReadAllLines("/sys/fs/cgroup/cpu/cpu.shares")[0];
                 indexViewModel.MemoryUsage = GetInBestUnit(long.Parse(usage));
                 indexViewModel.MemoryLimit = GetInBestUnit(long.Parse(limit));
-                indexViewModel.CpuUsage = GetMillisecond(long.Parse(cpuUsage));
+                indexViewModel.CpuLimit = GetCpuLimit(long.Parse(cpuQuota), long.Parse(cpuPeriod));
             }
 
             return indexViewModel;
         }
 
-        static string GetMillisecond(long nanosecond)
+        static string GetCpuLimit(long cpuQuota, long cpuPeriod)
         {
-            decimal millisecond = Decimal.Divide(nanosecond, 1000000);
-            return $"{millisecond:F} ms";
+            decimal cpuLimit = Decimal.Divide(cpuQuota, cpuPeriod) * 1000;
+            return $"{cpuLimit:F0} millicores";
         }
 
         static string GetInBestUnit(long size)

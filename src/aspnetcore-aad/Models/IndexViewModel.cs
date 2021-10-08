@@ -14,7 +14,8 @@ namespace aspnetcore_aad.Models
         public string MemoryLimit { get; set; }
         public string HostName { get; set; }
         public bool cGroup { get; set; }
-        public string CpuUsage { get; set; }
+        public string CpuShares { get; set; }
+        public string CpuLimit { get; set; }
         public IPAddress[] IpList { get; set; }
     }
 }
