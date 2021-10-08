@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: aspnetcore-aad
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default printf "v%s" .Chart.AppVersion }}"
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag | default (printf "v%s" .Chart.AppVersion) }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: ASPNETCORE_ENVIRONMENT
