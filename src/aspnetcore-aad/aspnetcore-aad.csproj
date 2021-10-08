@@ -7,7 +7,7 @@
     <RootNamespace>aspnetcore_aad</RootNamespace>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
-    <VersionPrefix>0.5.0</VersionPrefix>
+    <VersionPrefix>0.5.5</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup>
