@@ -9,7 +9,7 @@ aadPodIdBinding: # aad pod identity binding
 image:
   repository: ghcr.io/chunliu/aspnetcore-aad
   pullPolicy: IfNotPresent
-  tag: "v0.4.3"
+  tag: "v0.5.2"
 
 service:
   type: ClusterIP
@@ -43,7 +43,6 @@ env:
   aadDomain: # qualified.domain.name
   aadClientId: # Client Id
   aadTenantId: # Tenant Id
-  aksCluster: akscluster1 # The name of the aks cluster
   keyVaultUri: # Azure key vault Uri
   userAssignedIdentityClientId: # User assigned identity, has permission to the key vault
   secretName: # The secret name

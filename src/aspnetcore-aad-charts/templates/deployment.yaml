@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: aspnetcore-aad
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default printf "v%s" .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: ASPNETCORE_ENVIRONMENT
@@ -29,8 +29,6 @@ spec:
             value: {{ .Values.env.aadTenantId }}
           - name: AzureAD__ClientId
             value: {{ .Values.env.aadClientId }}
-          - name: AKSClusterInfo
-            value: {{ .Values.env.aksCluster }}
           - name: KeyVaultUri
             value: {{ .Values.env.keyVaultUri }}
           - name: UserAssignedIdentityClientId
