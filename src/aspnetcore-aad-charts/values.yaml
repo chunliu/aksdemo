@@ -9,7 +9,7 @@ aadPodIdBinding: # aad pod identity binding
 image:
   repository: ghcr.io/chunliu/aspnetcore-aad
   pullPolicy: IfNotPresent
-  tag: "v0.5.2"
+  tag: "v0.5.5"
 
 service:
   type: ClusterIP
@@ -46,3 +46,4 @@ env:
   keyVaultUri: # Azure key vault Uri
   userAssignedIdentityClientId: # User assigned identity, has permission to the key vault
   secretName: # The secret name
+  hostingEnv: # The hosting environment, e.g. Dev, Prod etc.

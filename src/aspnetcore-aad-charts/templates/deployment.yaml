@@ -35,6 +35,8 @@ spec:
             value: {{ .Values.env.userAssignedIdentityClientId }}
           - name: SecretName
             value: {{ .Values.env.secretName }}
+          - name: HostingEnv
+            value: {{ .Values.env.hostingEnv }}
           ports:
             - name: http
               containerPort: 80
