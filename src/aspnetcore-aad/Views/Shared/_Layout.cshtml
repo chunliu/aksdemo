@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -11,7 +14,14 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">.NET 5 on AKS</a>
+                <div style="margin-right: 50px;">
+                    <a class="navbar-brand" style="margin-right: 3px;" asp-area="" asp-controller="Home" asp-action="Index">
+                        .NET 5 on AKS
+                    </a>
+                    <span class="position-absolute top-0 start-0 translate-middle badge border border-info text-uppercase" style="font-weight: 400">
+                        @Configuration["HostingEnv"]
+                    </span>
+                </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
