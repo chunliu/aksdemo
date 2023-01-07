@@ -92,9 +92,7 @@ namespace aspnetcore_aad.Controllers
         public async Task<IActionResult> GetSecretFromKV()
         {
             // Get the credential of user assigned identity
-            var credential = new ChainedTokenCredential(
-                new ManagedIdentityCredential(_configuration["UserAssignedIdentityClientId"]), 
-                new AzureCliCredential());
+            var credential = new DefaultAzureCredential();
             // Get secret from key vault
             var kvClient = new SecretClient(new Uri(_configuration["KeyVaultUri"]), credential);
             var secretBundle = await kvClient.GetSecretAsync(_configuration["SecretName"]);

@@ -13,6 +13,7 @@ namespace aspnetcore_aad.Controllers
         public TodoItemsController(TodoContext context)
         {
             _context = context;
+            context.Database.EnsureCreated();
         }
 
         // GET: TodoItems
