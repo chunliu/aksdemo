@@ -33,7 +33,7 @@ namespace aspnetcore_aad
             var credential = new DefaultAzureCredential();
             // Get secret from key vault
             var kvClient = new SecretClient(new Uri(Configuration["KeyVaultUri"]), credential);
-            var secretBundle = await kvClient.GetSecretAsync("ConnectionString");
+            var secretBundle = await kvClient.GetSecretAsync("aksdemo-connstr");
 
             return secretBundle.Value.Value;
         }

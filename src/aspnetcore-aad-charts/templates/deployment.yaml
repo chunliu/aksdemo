@@ -14,8 +14,8 @@ spec:
     metadata:
       labels:
         app: aspnetcore-aad
-        aadpodidbinding: {{ .Values.aadPodIdBinding }} # Pod identity
     spec:
+      serviceAccountName: {{ .Values.serviceAccountName }} # workload identity
       containers:
         - name: aspnetcore-aad
           image: {{ .Values.image.repository }}:{{ .Values.image.tag | default (printf "v%s" .Chart.AppVersion) }}
@@ -31,8 +31,6 @@ spec:
             value: {{ .Values.env.aadClientId }}
           - name: KeyVaultUri
             value: {{ .Values.env.keyVaultUri }}
-          - name: UserAssignedIdentityClientId
-            value: {{ .Values.env.userAssignedIdentityClientId }}
           - name: SecretName
             value: {{ .Values.env.secretName }}
           - name: HostingEnv
