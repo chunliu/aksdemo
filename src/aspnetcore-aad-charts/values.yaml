@@ -9,7 +9,7 @@ serviceAccountName: # aad pod identity binding
 image:
   repository: chunliu.azurecr.io/aksdemo
   pullPolicy: IfNotPresent
-  tag: "v0.6.1"
+  tag: "v0.6.4"
 
 service:
   type: ClusterIP
@@ -27,7 +27,7 @@ ingress:
       paths:
         - /
   tls: 
-    - secretName: frontend-tls
+    - secretName: aksdemo-tls
       hosts:
         # - yoursite.yourdomain.com
 

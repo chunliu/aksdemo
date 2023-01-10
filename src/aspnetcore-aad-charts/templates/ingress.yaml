@@ -1,10 +1,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: aspnetcore-aad-ingress
+  name: aksdemo-ingress
   namespace: {{ .Release.Namespace }}
   labels:
-    app: aspnetcore-aad
+    app: aksdemo
   annotations:
   {{- if .Values.ingress.canary }}
     nginx.ingress.kubernetes.io/canary: "true"
@@ -38,7 +38,7 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: aspnetcore-aad-svc
+                name: aksdemo-svc
                 port: 
                   number: 80
           {{- end }}

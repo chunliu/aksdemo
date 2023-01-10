@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: aspnetcore-aad
+  name: aksdemo
   namespace: {{ .Release.Namespace }}
   labels:
-    app: aspnetcore-aad
+    app: aksdemo
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: aspnetcore-aad
+      app: aksdemo
   template:
     metadata:
       labels:
-        app: aspnetcore-aad
+        app: aksdemo
     spec:
       serviceAccountName: {{ .Values.serviceAccountName }} # workload identity
       containers:
-        - name: aspnetcore-aad
+        - name: aksdemo
           image: {{ .Values.image.repository }}:{{ .Values.image.tag | default (printf "v%s" .Chart.AppVersion) }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:

@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: aspnetcore-aad-svc
+  name: aksdemo-svc
   namespace: {{ .Release.Namespace }}
   labels:
-    app: aspnetcore-aad
+    app: aksdemo
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -13,4 +13,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: aspnetcore-aad
+    app: aksdemo
