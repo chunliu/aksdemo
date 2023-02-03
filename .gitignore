@@ -349,3 +349,6 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 /src/aspnetcore-aad/appsettings.Development.json
+/src/aspnetcore-aad/nbgv-version.json
+/src/aspnetcore-aad/Directory.Build.targets
+/src/aspnetcore-aad-charts/values1.yaml
