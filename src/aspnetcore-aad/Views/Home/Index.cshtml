@@ -40,7 +40,11 @@
             <td class="text-right font-weight-bold">Total Available GC Memory</td>
             <td class="text-left">@Model.TotalAvailableMemory</td>
         </tr>
-        @if (Model.cGroup)
+        <tr>
+            <td class="text-right font-weight-bold">cgroup version</td>
+            <td class="text-left">@Model.CGroup</td>
+        </tr>
+        @if (Model.CGroup != "none")
         {
             <tr>
                 <td class="text-right font-weight-bold">cgroup CPU Shares</td>

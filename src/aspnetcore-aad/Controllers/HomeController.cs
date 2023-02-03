@@ -11,6 +11,7 @@ using Azure.Identity;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.IO;
+using FileIO = System.IO.File;
 
 namespace aspnetcore_aad.Controllers
 {
@@ -43,22 +44,44 @@ namespace aspnetcore_aad.Controllers
             indexViewModel.HostName = Dns.GetHostName();
             indexViewModel.IpList = await Dns.GetHostAddressesAsync(indexViewModel.HostName);
 
-            indexViewModel.cGroup = RuntimeInformation.OSDescription.StartsWith("Linux") 
-                && Directory.Exists("/sys/fs/cgroup/memory")
-                && Directory.Exists("/sys/fs/cgroup/cpu");
-
-            _logger.LogInformation($"running in cgroup? : {indexViewModel.cGroup}");
-
-            if (indexViewModel.cGroup)
+            indexViewModel.CGroup = "none";
+            if (RuntimeInformation.OSDescription.StartsWith("Linux"))
             {
-                string usage = System.IO.File.ReadAllLines("/sys/fs/cgroup/memory/memory.usage_in_bytes")[0];
-                string limit = System.IO.File.ReadAllLines("/sys/fs/cgroup/memory/memory.limit_in_bytes")[0];
-                string cpuQuota = System.IO.File.ReadAllLines("/sys/fs/cgroup/cpu/cpu.cfs_quota_us")[0];
-                string cpuPeriod = System.IO.File.ReadAllLines("/sys/fs/cgroup/cpu/cpu.cfs_period_us")[0];
-                indexViewModel.CpuShares = System.IO.File.ReadAllLines("/sys/fs/cgroup/cpu/cpu.shares")[0];
+                if (Directory.Exists("/sys/fs/cgroup/memory")
+                    && Directory.Exists("/sys/fs/cgroup/cpu"))
+                {
+                    indexViewModel.CGroup = "v1";
+                }
+                else if (FileIO.Exists("/sys/fs/cgroup/cpu.max")
+                    && FileIO.Exists("/sys/fs/cgroup/memory.max"))
+                {
+                    indexViewModel.CGroup = "v2";
+                }
+            }
+
+            _logger.LogInformation("cgroup version: {cgroup}", indexViewModel.CGroup);
+
+            if (indexViewModel.CGroup == "v1")
+            {
+                string usage = FileIO.ReadAllLines("/sys/fs/cgroup/memory/memory.usage_in_bytes")[0];
+                string limit = FileIO.ReadAllLines("/sys/fs/cgroup/memory/memory.limit_in_bytes")[0];
+                string cpuQuota = FileIO.ReadAllLines("/sys/fs/cgroup/cpu/cpu.cfs_quota_us")[0];
+                string cpuPeriod = FileIO.ReadAllLines("/sys/fs/cgroup/cpu/cpu.cfs_period_us")[0];
+                indexViewModel.CpuShares = FileIO.ReadAllLines("/sys/fs/cgroup/cpu/cpu.shares")[0];
                 indexViewModel.MemoryUsage = GetInBestUnit(long.Parse(usage));
                 indexViewModel.MemoryLimit = GetInBestUnit(long.Parse(limit));
                 indexViewModel.CpuLimit = GetCpuLimit(long.Parse(cpuQuota), long.Parse(cpuPeriod));
+            }
+            else if (indexViewModel.CGroup == "v2")
+            {
+                string usage = FileIO.ReadAllLines("/sys/fs/cgroup/memory.current")[0];
+                string limit = FileIO.ReadAllLines("/sys/fs/cgroup/memory.max")[0];
+                string cpuMax = FileIO.ReadAllLines("/sys/fs/cgroup/cpu.max")[0];
+                string[] cpuQuotaPeriod = cpuMax.Split(' ');
+                indexViewModel.CpuShares = FileIO.ReadAllLines("/sys/fs/cgroup/cpu.weight")[0];
+                indexViewModel.MemoryUsage = GetInBestUnit(long.Parse(usage));
+                indexViewModel.MemoryLimit = GetInBestUnit(long.Parse(limit));
+                indexViewModel.CpuLimit = GetCpuLimit(long.Parse(cpuQuotaPeriod[0]), long.Parse(cpuQuotaPeriod[1]));
             }
 
             return indexViewModel;
