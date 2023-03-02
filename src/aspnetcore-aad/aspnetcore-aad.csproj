@@ -19,8 +19,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Identity.Web" Version="1.26.0" />
-    <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.26.0" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="2.5.0" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.5.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.4" />
     <PackageReference Include="Nerdbank.GitVersioning" Version="3.5.119">
