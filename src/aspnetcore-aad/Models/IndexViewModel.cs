@@ -17,5 +17,6 @@ namespace aspnetcore_aad.Models
         public string CpuShares { get; set; }
         public string CpuLimit { get; set; }
         public IPAddress[] IpList { get; set; }
+        public string ForwardedFor { get; set; }
     }
 }

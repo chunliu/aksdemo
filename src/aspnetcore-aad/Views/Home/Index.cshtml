@@ -78,5 +78,12 @@
                 </td>
             </tr>
         }
+        @if (!string.IsNullOrEmpty(Model.ForwardedFor))
+        {
+            <tr>
+                <td class="text-right font-weight-bold">X-Forwarded-For</td>
+                <td class="text-left">@Model.ForwardedFor</td>
+            </tr>
+        }
     </table>
 </div>

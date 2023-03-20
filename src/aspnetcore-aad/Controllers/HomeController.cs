@@ -43,6 +43,7 @@ namespace aspnetcore_aad.Controllers
             indexViewModel.TotalAvailableMemory = GetInBestUnit(gcInfo.TotalAvailableMemoryBytes);
             indexViewModel.HostName = Dns.GetHostName();
             indexViewModel.IpList = await Dns.GetHostAddressesAsync(indexViewModel.HostName);
+            indexViewModel.ForwardedFor = Request.Headers["X-Forwarded-For"];
 
             indexViewModel.CGroup = "none";
             if (RuntimeInformation.OSDescription.StartsWith("Linux"))
